@@ -92,7 +92,8 @@ app.get("/token", function (request, response) {
 // const PORT = "https://twilio-appa.herokuapp.com/";
 // Create http server and run it.
 const server = http.createServer(app);
-const port = process.env.PORT || 3000;
+const port = process.env.PORTT || 3000;
+// const port = process.env.PORT || 3000;
 server.listen(port, function () {
   console.log("Express server running on *:" + port);
 });
