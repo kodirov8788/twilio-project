@@ -87,11 +87,10 @@ app.get("/token", function (request, response) {
   // Serialize the token to a JWT string.
   response.send(token.toJwt());
 });
-const PORT = "https://twilio-appa.herokuapp.com/";
+// const PORT = "https://twilio-appa.herokuapp.com/";
 // Create http server and run it.
 const server = http.createServer(app);
-// const port = process.env.PORT || 3000;
-const port = PORT;
+const port = process.env.PORT || 3000;
 server.listen(port, function () {
   console.log("Express server running on *:" + port);
 });
