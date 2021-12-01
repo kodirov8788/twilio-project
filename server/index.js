@@ -87,7 +87,7 @@ app.get("/token", function (request, response) {
   // Serialize the token to a JWT string.
   response.send(token.toJwt());
 });
-const PORT = "https://vercel.com/kodirov8788/twilio-project";
+const PORT = "https://twilio-appa.herokuapp.com/";
 // Create http server and run it.
 const server = http.createServer(app);
 // const port = process.env.PORT || 3000;
