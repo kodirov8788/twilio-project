@@ -12,6 +12,8 @@ require("dotenv").load();
 const express = require("express");
 const http = require("http");
 const path = require("path");
+const cors = require("cors");
+
 const {
   jwt: { AccessToken },
 } = require("twilio");
@@ -19,11 +21,11 @@ const {
 const VideoGrant = AccessToken.VideoGrant;
 
 // Max. period that a Participant is allowed to be in a Room (currently 14400 seconds or 4 hours)
-const MAX_ALLOWED_SESSION_DURATION = 30;
+const MAX_ALLOWED_SESSION_DURATION = 14400;
 
 // Create Express webapp.
 const app = express();
-
+app.use(cors());
 // Set up the paths for the examples.
 [
   "bandwidthconstraints",
@@ -47,7 +49,7 @@ const app = express();
 
 // Set up the path for the quickstart.
 const quickstartPath = path.join(__dirname, "../public");
-app.use("/quickstart", express.static(quickstartPath));
+app.use("/", express.static(quickstartPath));
 
 // Set up the path for the examples page.
 const examplesPath = path.join(__dirname, "../examples");
