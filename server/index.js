@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Load Twilio configuration from .env config file - the following environment
@@ -7,12 +7,14 @@
  * process.env.TWILIO_API_KEY
  * process.env.TWILIO_API_SECRET
  */
-require('dotenv').load();
+require("dotenv").load();
 
-const express = require('express');
-const http = require('http');
-const path = require('path');
-const { jwt: { AccessToken } } = require('twilio');
+const express = require("express");
+const http = require("http");
+const path = require("path");
+const {
+  jwt: { AccessToken },
+} = require("twilio");
 
 const VideoGrant = AccessToken.VideoGrant;
 
@@ -24,38 +26,38 @@ const app = express();
 
 // Set up the paths for the examples.
 [
-  'bandwidthconstraints',
-  'codecpreferences',
-  'dominantspeaker',
-  'localvideofilter',
-  'localvideosnapshot',
-  'mediadevices',
-  'networkquality',
-  'reconnection',
-  'screenshare',
-  'localmediacontrols',
-  'remotereconnection',
-  'datatracks',
-  'manualrenderhint',
-  'autorenderhint'
-].forEach(example => {
+  "bandwidthconstraints",
+  "codecpreferences",
+  "dominantspeaker",
+  "localvideofilter",
+  "localvideosnapshot",
+  "mediadevices",
+  "networkquality",
+  "reconnection",
+  "screenshare",
+  "localmediacontrols",
+  "remotereconnection",
+  "datatracks",
+  "manualrenderhint",
+  "autorenderhint",
+].forEach((example) => {
   const examplePath = path.join(__dirname, `../examples/${example}/public`);
   app.use(`/${example}`, express.static(examplePath));
 });
 
 // Set up the path for the quickstart.
-const quickstartPath = path.join(__dirname, '../quickstart/public');
-app.use('/quickstart', express.static(quickstartPath));
+const quickstartPath = path.join(__dirname, "../public");
+app.use("/quickstart", express.static(quickstartPath));
 
 // Set up the path for the examples page.
-const examplesPath = path.join(__dirname, '../examples');
-app.use('/examples', express.static(examplesPath));
+const examplesPath = path.join(__dirname, "../examples");
+app.use("/examples", express.static(examplesPath));
 
 /**
  * Default to the Quick Start application.
  */
-app.get('/', (request, response) => {
-  response.redirect('/quickstart');
+app.get("/", (request, response) => {
+  response.redirect("/quickstart");
 });
 
 /**
@@ -63,7 +65,7 @@ app.get('/', (request, response) => {
  * username for the client requesting a token, and takes a device ID as a query
  * parameter.
  */
-app.get('/token', function(request, response) {
+app.get("/token", function (request, response) {
   const { identity } = request.query;
 
   // Create an access token which we will sign and return to the client,
@@ -89,6 +91,6 @@ app.get('/token', function(request, response) {
 // Create http server and run it.
 const server = http.createServer(app);
 const port = process.env.PORT || 3000;
-server.listen(port, function() {
-  console.log('Express server running on *:' + port);
+server.listen(port, function () {
+  console.log("Express server running on *:" + port);
 });
