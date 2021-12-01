@@ -21,7 +21,7 @@ function connectWithPreferredCodecs(token, roomName, preferredAudioCodecs, prefe
 
 exports.connectWithPreferredCodecs = connectWithPreferredCodecs;
 
-},{"twilio-video":47}],2:[function(require,module,exports){
+},{"twilio-video":50}],2:[function(require,module,exports){
 'use strict';
 
 const Prism = require('prismjs');
@@ -233,7 +233,7 @@ function wait(ms) {
   });
 }());
 
-},{"../../util/getroomcredentials":3,"../../util/getsnippet":4,"../../util/waveform":5,"./helpers":1,"prismjs":35,"twilio-video":47}],3:[function(require,module,exports){
+},{"../../util/getroomcredentials":3,"../../util/getsnippet":4,"../../util/waveform":5,"./helpers":1,"prismjs":38,"twilio-video":50}],3:[function(require,module,exports){
 'use strict';
 
 const ADJECTIVES = [
@@ -2019,7 +2019,7 @@ function updateTrackIdsToSSRCs(sdpFormat, tracksToSSRCs, sdp) {
 
 module.exports = ChromeRTCPeerConnection;
 
-},{"../mediastream":9,"../rtcrtpsender":16,"../rtcsessiondescription/chrome":17,"../util":21,"../util/eventtarget":20,"../util/latch":22,"../util/sdp":23,"util":190}],13:[function(require,module,exports){
+},{"../mediastream":9,"../rtcrtpsender":16,"../rtcsessiondescription/chrome":17,"../util":21,"../util/eventtarget":20,"../util/latch":22,"../util/sdp":23,"util":34}],13:[function(require,module,exports){
 /* globals RTCPeerConnection */
 'use strict';
 
@@ -2352,7 +2352,7 @@ function overwriteWithInitiallyNegotiatedDtlsRole(description, dtlsRole) {
 
 module.exports = FirefoxRTCPeerConnection;
 
-},{"../rtcsessiondescription/firefox":18,"../util":21,"../util/eventtarget":20,"../util/sdp":23,"util":190}],14:[function(require,module,exports){
+},{"../rtcsessiondescription/firefox":18,"../util":21,"../util/eventtarget":20,"../util/sdp":23,"util":34}],14:[function(require,module,exports){
 'use strict';
 
 if (typeof RTCPeerConnection === 'function') {
@@ -2768,7 +2768,7 @@ function shimDataChannel(dataChannel) {
 
 module.exports = SafariRTCPeerConnection;
 
-},{"../util":21,"../util/eventtarget":20,"../util/latch":22,"../util/sdp":23,"util":190}],16:[function(require,module,exports){
+},{"../util":21,"../util/eventtarget":20,"../util/latch":22,"../util/sdp":23,"util":34}],16:[function(require,module,exports){
 'use strict';
 
 /**
@@ -3847,7 +3847,7 @@ Backoff.prototype.reset = function() {
 
 module.exports = Backoff;
 
-},{"events":31,"precond":32,"util":190}],27:[function(require,module,exports){
+},{"events":31,"precond":35,"util":34}],27:[function(require,module,exports){
 //      Copyright (c) 2012 Mathieu Turcotte
 //      Licensed under the MIT license.
 
@@ -4039,7 +4039,7 @@ FunctionCall.prototype.handleBackoff_ = function(number, delay, err) {
 
 module.exports = FunctionCall;
 
-},{"./backoff":26,"./strategy/fibonacci":29,"events":31,"precond":32,"util":190}],28:[function(require,module,exports){
+},{"./backoff":26,"./strategy/fibonacci":29,"events":31,"precond":35,"util":34}],28:[function(require,module,exports){
 //      Copyright (c) 2012 Mathieu Turcotte
 //      Licensed under the MIT license.
 
@@ -4082,7 +4082,7 @@ ExponentialBackoffStrategy.prototype.reset_ = function() {
 
 module.exports = ExponentialBackoffStrategy;
 
-},{"./strategy":30,"precond":32,"util":190}],29:[function(require,module,exports){
+},{"./strategy":30,"precond":35,"util":34}],29:[function(require,module,exports){
 //      Copyright (c) 2012 Mathieu Turcotte
 //      Licensed under the MIT license.
 
@@ -4112,7 +4112,7 @@ FibonacciBackoffStrategy.prototype.reset_ = function() {
 
 module.exports = FibonacciBackoffStrategy;
 
-},{"./strategy":30,"util":190}],30:[function(require,module,exports){
+},{"./strategy":30,"util":34}],30:[function(require,module,exports){
 //      Copyright (c) 2012 Mathieu Turcotte
 //      Licensed under the MIT license.
 
@@ -4194,7 +4194,7 @@ BackoffStrategy.prototype.reset_ = function() {
 
 module.exports = BackoffStrategy;
 
-},{"events":31,"util":190}],31:[function(require,module,exports){
+},{"events":31,"util":34}],31:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4499,13 +4499,635 @@ function isUndefined(arg) {
 }
 
 },{}],32:[function(require,module,exports){
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+},{}],33:[function(require,module,exports){
+module.exports = function isBuffer(arg) {
+  return arg && typeof arg === 'object'
+    && typeof arg.copy === 'function'
+    && typeof arg.fill === 'function'
+    && typeof arg.readUInt8 === 'function';
+}
+},{}],34:[function(require,module,exports){
+(function (process,global){(function (){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+var formatRegExp = /%[sdj%]/g;
+exports.format = function(f) {
+  if (!isString(f)) {
+    var objects = [];
+    for (var i = 0; i < arguments.length; i++) {
+      objects.push(inspect(arguments[i]));
+    }
+    return objects.join(' ');
+  }
+
+  var i = 1;
+  var args = arguments;
+  var len = args.length;
+  var str = String(f).replace(formatRegExp, function(x) {
+    if (x === '%%') return '%';
+    if (i >= len) return x;
+    switch (x) {
+      case '%s': return String(args[i++]);
+      case '%d': return Number(args[i++]);
+      case '%j':
+        try {
+          return JSON.stringify(args[i++]);
+        } catch (_) {
+          return '[Circular]';
+        }
+      default:
+        return x;
+    }
+  });
+  for (var x = args[i]; i < len; x = args[++i]) {
+    if (isNull(x) || !isObject(x)) {
+      str += ' ' + x;
+    } else {
+      str += ' ' + inspect(x);
+    }
+  }
+  return str;
+};
+
+
+// Mark that a method should not be used.
+// Returns a modified function which warns once by default.
+// If --no-deprecation is set, then it is a no-op.
+exports.deprecate = function(fn, msg) {
+  // Allow for deprecating things in the process of starting up.
+  if (isUndefined(global.process)) {
+    return function() {
+      return exports.deprecate(fn, msg).apply(this, arguments);
+    };
+  }
+
+  if (process.noDeprecation === true) {
+    return fn;
+  }
+
+  var warned = false;
+  function deprecated() {
+    if (!warned) {
+      if (process.throwDeprecation) {
+        throw new Error(msg);
+      } else if (process.traceDeprecation) {
+        console.trace(msg);
+      } else {
+        console.error(msg);
+      }
+      warned = true;
+    }
+    return fn.apply(this, arguments);
+  }
+
+  return deprecated;
+};
+
+
+var debugs = {};
+var debugEnviron;
+exports.debuglog = function(set) {
+  if (isUndefined(debugEnviron))
+    debugEnviron = process.env.NODE_DEBUG || '';
+  set = set.toUpperCase();
+  if (!debugs[set]) {
+    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
+      var pid = process.pid;
+      debugs[set] = function() {
+        var msg = exports.format.apply(exports, arguments);
+        console.error('%s %d: %s', set, pid, msg);
+      };
+    } else {
+      debugs[set] = function() {};
+    }
+  }
+  return debugs[set];
+};
+
+
+/**
+ * Echos the value of a value. Trys to print the value out
+ * in the best way possible given the different types.
+ *
+ * @param {Object} obj The object to print out.
+ * @param {Object} opts Optional options object that alters the output.
+ */
+/* legacy: obj, showHidden, depth, colors*/
+function inspect(obj, opts) {
+  // default options
+  var ctx = {
+    seen: [],
+    stylize: stylizeNoColor
+  };
+  // legacy...
+  if (arguments.length >= 3) ctx.depth = arguments[2];
+  if (arguments.length >= 4) ctx.colors = arguments[3];
+  if (isBoolean(opts)) {
+    // legacy...
+    ctx.showHidden = opts;
+  } else if (opts) {
+    // got an "options" object
+    exports._extend(ctx, opts);
+  }
+  // set default options
+  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
+  if (isUndefined(ctx.depth)) ctx.depth = 2;
+  if (isUndefined(ctx.colors)) ctx.colors = false;
+  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
+  if (ctx.colors) ctx.stylize = stylizeWithColor;
+  return formatValue(ctx, obj, ctx.depth);
+}
+exports.inspect = inspect;
+
+
+// http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
+inspect.colors = {
+  'bold' : [1, 22],
+  'italic' : [3, 23],
+  'underline' : [4, 24],
+  'inverse' : [7, 27],
+  'white' : [37, 39],
+  'grey' : [90, 39],
+  'black' : [30, 39],
+  'blue' : [34, 39],
+  'cyan' : [36, 39],
+  'green' : [32, 39],
+  'magenta' : [35, 39],
+  'red' : [31, 39],
+  'yellow' : [33, 39]
+};
+
+// Don't use 'blue' not visible on cmd.exe
+inspect.styles = {
+  'special': 'cyan',
+  'number': 'yellow',
+  'boolean': 'yellow',
+  'undefined': 'grey',
+  'null': 'bold',
+  'string': 'green',
+  'date': 'magenta',
+  // "name": intentionally not styling
+  'regexp': 'red'
+};
+
+
+function stylizeWithColor(str, styleType) {
+  var style = inspect.styles[styleType];
+
+  if (style) {
+    return '\u001b[' + inspect.colors[style][0] + 'm' + str +
+           '\u001b[' + inspect.colors[style][1] + 'm';
+  } else {
+    return str;
+  }
+}
+
+
+function stylizeNoColor(str, styleType) {
+  return str;
+}
+
+
+function arrayToHash(array) {
+  var hash = {};
+
+  array.forEach(function(val, idx) {
+    hash[val] = true;
+  });
+
+  return hash;
+}
+
+
+function formatValue(ctx, value, recurseTimes) {
+  // Provide a hook for user-specified inspect functions.
+  // Check that value is an object with an inspect function on it
+  if (ctx.customInspect &&
+      value &&
+      isFunction(value.inspect) &&
+      // Filter out the util module, it's inspect function is special
+      value.inspect !== exports.inspect &&
+      // Also filter out any prototype objects using the circular check.
+      !(value.constructor && value.constructor.prototype === value)) {
+    var ret = value.inspect(recurseTimes, ctx);
+    if (!isString(ret)) {
+      ret = formatValue(ctx, ret, recurseTimes);
+    }
+    return ret;
+  }
+
+  // Primitive types cannot have properties
+  var primitive = formatPrimitive(ctx, value);
+  if (primitive) {
+    return primitive;
+  }
+
+  // Look up the keys of the object.
+  var keys = Object.keys(value);
+  var visibleKeys = arrayToHash(keys);
+
+  if (ctx.showHidden) {
+    keys = Object.getOwnPropertyNames(value);
+  }
+
+  // IE doesn't make error fields non-enumerable
+  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
+  if (isError(value)
+      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
+    return formatError(value);
+  }
+
+  // Some type of object without properties can be shortcutted.
+  if (keys.length === 0) {
+    if (isFunction(value)) {
+      var name = value.name ? ': ' + value.name : '';
+      return ctx.stylize('[Function' + name + ']', 'special');
+    }
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    }
+    if (isDate(value)) {
+      return ctx.stylize(Date.prototype.toString.call(value), 'date');
+    }
+    if (isError(value)) {
+      return formatError(value);
+    }
+  }
+
+  var base = '', array = false, braces = ['{', '}'];
+
+  // Make Array say that they are Array
+  if (isArray(value)) {
+    array = true;
+    braces = ['[', ']'];
+  }
+
+  // Make functions say that they are functions
+  if (isFunction(value)) {
+    var n = value.name ? ': ' + value.name : '';
+    base = ' [Function' + n + ']';
+  }
+
+  // Make RegExps say that they are RegExps
+  if (isRegExp(value)) {
+    base = ' ' + RegExp.prototype.toString.call(value);
+  }
+
+  // Make dates with properties first say the date
+  if (isDate(value)) {
+    base = ' ' + Date.prototype.toUTCString.call(value);
+  }
+
+  // Make error with message first say the error
+  if (isError(value)) {
+    base = ' ' + formatError(value);
+  }
+
+  if (keys.length === 0 && (!array || value.length == 0)) {
+    return braces[0] + base + braces[1];
+  }
+
+  if (recurseTimes < 0) {
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    } else {
+      return ctx.stylize('[Object]', 'special');
+    }
+  }
+
+  ctx.seen.push(value);
+
+  var output;
+  if (array) {
+    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
+  } else {
+    output = keys.map(function(key) {
+      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
+    });
+  }
+
+  ctx.seen.pop();
+
+  return reduceToSingleString(output, base, braces);
+}
+
+
+function formatPrimitive(ctx, value) {
+  if (isUndefined(value))
+    return ctx.stylize('undefined', 'undefined');
+  if (isString(value)) {
+    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
+                                             .replace(/'/g, "\\'")
+                                             .replace(/\\"/g, '"') + '\'';
+    return ctx.stylize(simple, 'string');
+  }
+  if (isNumber(value))
+    return ctx.stylize('' + value, 'number');
+  if (isBoolean(value))
+    return ctx.stylize('' + value, 'boolean');
+  // For some reason typeof null is "object", so special case here.
+  if (isNull(value))
+    return ctx.stylize('null', 'null');
+}
+
+
+function formatError(value) {
+  return '[' + Error.prototype.toString.call(value) + ']';
+}
+
+
+function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
+  var output = [];
+  for (var i = 0, l = value.length; i < l; ++i) {
+    if (hasOwnProperty(value, String(i))) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          String(i), true));
+    } else {
+      output.push('');
+    }
+  }
+  keys.forEach(function(key) {
+    if (!key.match(/^\d+$/)) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          key, true));
+    }
+  });
+  return output;
+}
+
+
+function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
+  var name, str, desc;
+  desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
+  if (desc.get) {
+    if (desc.set) {
+      str = ctx.stylize('[Getter/Setter]', 'special');
+    } else {
+      str = ctx.stylize('[Getter]', 'special');
+    }
+  } else {
+    if (desc.set) {
+      str = ctx.stylize('[Setter]', 'special');
+    }
+  }
+  if (!hasOwnProperty(visibleKeys, key)) {
+    name = '[' + key + ']';
+  }
+  if (!str) {
+    if (ctx.seen.indexOf(desc.value) < 0) {
+      if (isNull(recurseTimes)) {
+        str = formatValue(ctx, desc.value, null);
+      } else {
+        str = formatValue(ctx, desc.value, recurseTimes - 1);
+      }
+      if (str.indexOf('\n') > -1) {
+        if (array) {
+          str = str.split('\n').map(function(line) {
+            return '  ' + line;
+          }).join('\n').substr(2);
+        } else {
+          str = '\n' + str.split('\n').map(function(line) {
+            return '   ' + line;
+          }).join('\n');
+        }
+      }
+    } else {
+      str = ctx.stylize('[Circular]', 'special');
+    }
+  }
+  if (isUndefined(name)) {
+    if (array && key.match(/^\d+$/)) {
+      return str;
+    }
+    name = JSON.stringify('' + key);
+    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+      name = name.substr(1, name.length - 2);
+      name = ctx.stylize(name, 'name');
+    } else {
+      name = name.replace(/'/g, "\\'")
+                 .replace(/\\"/g, '"')
+                 .replace(/(^"|"$)/g, "'");
+      name = ctx.stylize(name, 'string');
+    }
+  }
+
+  return name + ': ' + str;
+}
+
+
+function reduceToSingleString(output, base, braces) {
+  var numLinesEst = 0;
+  var length = output.reduce(function(prev, cur) {
+    numLinesEst++;
+    if (cur.indexOf('\n') >= 0) numLinesEst++;
+    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
+  }, 0);
+
+  if (length > 60) {
+    return braces[0] +
+           (base === '' ? '' : base + '\n ') +
+           ' ' +
+           output.join(',\n  ') +
+           ' ' +
+           braces[1];
+  }
+
+  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
+}
+
+
+// NOTE: These type checking functions intentionally don't use `instanceof`
+// because it is fragile and can be easily faked with `Object.create()`.
+function isArray(ar) {
+  return Array.isArray(ar);
+}
+exports.isArray = isArray;
+
+function isBoolean(arg) {
+  return typeof arg === 'boolean';
+}
+exports.isBoolean = isBoolean;
+
+function isNull(arg) {
+  return arg === null;
+}
+exports.isNull = isNull;
+
+function isNullOrUndefined(arg) {
+  return arg == null;
+}
+exports.isNullOrUndefined = isNullOrUndefined;
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+exports.isNumber = isNumber;
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+exports.isString = isString;
+
+function isSymbol(arg) {
+  return typeof arg === 'symbol';
+}
+exports.isSymbol = isSymbol;
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+exports.isUndefined = isUndefined;
+
+function isRegExp(re) {
+  return isObject(re) && objectToString(re) === '[object RegExp]';
+}
+exports.isRegExp = isRegExp;
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+exports.isObject = isObject;
+
+function isDate(d) {
+  return isObject(d) && objectToString(d) === '[object Date]';
+}
+exports.isDate = isDate;
+
+function isError(e) {
+  return isObject(e) &&
+      (objectToString(e) === '[object Error]' || e instanceof Error);
+}
+exports.isError = isError;
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+exports.isFunction = isFunction;
+
+function isPrimitive(arg) {
+  return arg === null ||
+         typeof arg === 'boolean' ||
+         typeof arg === 'number' ||
+         typeof arg === 'string' ||
+         typeof arg === 'symbol' ||  // ES6 symbol
+         typeof arg === 'undefined';
+}
+exports.isPrimitive = isPrimitive;
+
+exports.isBuffer = require('./support/isBuffer');
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+
+
+function pad(n) {
+  return n < 10 ? '0' + n.toString(10) : n.toString(10);
+}
+
+
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+              'Oct', 'Nov', 'Dec'];
+
+// 26 Feb 16:19:34
+function timestamp() {
+  var d = new Date();
+  var time = [pad(d.getHours()),
+              pad(d.getMinutes()),
+              pad(d.getSeconds())].join(':');
+  return [d.getDate(), months[d.getMonth()], time].join(' ');
+}
+
+
+// log is just a thin wrapper to console.log that prepends a timestamp
+exports.log = function() {
+  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+};
+
+
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * The Function.prototype.inherits from lang.js rewritten as a standalone
+ * function (not on Function.prototype). NOTE: If this file is to be loaded
+ * during bootstrapping this function needs to be rewritten using some native
+ * functions as prototype setup using normal JavaScript does not work as
+ * expected during bootstrapping (see mirror.js in r114903).
+ *
+ * @param {function} ctor Constructor function which needs to inherit the
+ *     prototype.
+ * @param {function} superCtor Constructor function to inherit prototype from.
+ */
+exports.inherits = require('inherits');
+
+exports._extend = function(origin, add) {
+  // Don't do anything if add isn't an object
+  if (!add || !isObject(add)) return origin;
+
+  var keys = Object.keys(add);
+  var i = keys.length;
+  while (i--) {
+    origin[keys[i]] = add[keys[i]];
+  }
+  return origin;
+};
+
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+}).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":33,"_process":39,"inherits":32}],35:[function(require,module,exports){
 /*
  * Copyright (c) 2012 Mathieu Turcotte
  * Licensed under the MIT license.
  */
 
 module.exports = require('./lib/checks');
-},{"./lib/checks":33}],33:[function(require,module,exports){
+},{"./lib/checks":36}],36:[function(require,module,exports){
 /*
  * Copyright (c) 2012 Mathieu Turcotte
  * Licensed under the MIT license.
@@ -4601,7 +5223,7 @@ module.exports.checkIsBoolean = typeCheck('boolean');
 module.exports.checkIsFunction = typeCheck('function');
 module.exports.checkIsObject = typeCheck('object');
 
-},{"./errors":34,"util":190}],34:[function(require,module,exports){
+},{"./errors":37,"util":34}],37:[function(require,module,exports){
 /*
  * Copyright (c) 2012 Mathieu Turcotte
  * Licensed under the MIT license.
@@ -4627,7 +5249,7 @@ IllegalStateError.prototype.name = 'IllegalStateError';
 
 module.exports.IllegalStateError = IllegalStateError;
 module.exports.IllegalArgumentError = IllegalArgumentError;
-},{"util":190}],35:[function(require,module,exports){
+},{"util":34}],38:[function(require,module,exports){
 (function (global){(function (){
 
 /* **********************************************
@@ -6425,7 +7047,7 @@ Prism.languages.js = Prism.languages.javascript;
 }());
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -6611,7 +7233,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 var CancelablePromise = require('./util/cancelablepromise');
 /**
@@ -6657,7 +7279,7 @@ function createCancelableRoomPromise(getLocalTracks, createLocalParticipant, cre
 }
 module.exports = createCancelableRoomPromise;
 
-},{"./util/cancelablepromise":155}],38:[function(require,module,exports){
+},{"./util/cancelablepromise":158}],41:[function(require,module,exports){
 'use strict';
 var MediaStreamTrack = require('@twilio/webrtc').MediaStreamTrack;
 var _a = require('@twilio/webrtc/lib/util'), guessBrowser = _a.guessBrowser, guessBrowserVersion = _a.guessBrowserVersion;
@@ -7545,7 +8167,7 @@ function normalizeCodecSettings(nameOrSettings) {
 }
 module.exports = connect;
 
-},{"./cancelableroompromise":37,"./createlocaltracks":40,"./encodingparameters":45,"./localparticipant":48,"./media/track/es5":50,"./networkqualityconfiguration":78,"./room":90,"./signaling/v2":104,"./util":162,"./util/cancelablepromise":155,"./util/constants":156,"./util/eventobserver":160,"./util/insightspublisher":163,"./util/insightspublisher/null":164,"./util/log":166,"./util/validate":181,"@twilio/webrtc":8,"@twilio/webrtc/lib/util":21}],39:[function(require,module,exports){
+},{"./cancelableroompromise":40,"./createlocaltracks":43,"./encodingparameters":48,"./localparticipant":51,"./media/track/es5":53,"./networkqualityconfiguration":81,"./room":93,"./signaling/v2":107,"./util":165,"./util/cancelablepromise":158,"./util/constants":159,"./util/eventobserver":163,"./util/insightspublisher":166,"./util/insightspublisher/null":167,"./util/log":169,"./util/validate":184,"@twilio/webrtc":8,"@twilio/webrtc/lib/util":21}],42:[function(require,module,exports){
 'use strict';
 var defaultCreateLocalTracks = require('./createlocaltracks');
 var _a = require('./util/constants'), DEFAULT_LOG_LEVEL = _a.DEFAULT_LOG_LEVEL, DEFAULT_LOGGER_NAME = _a.DEFAULT_LOGGER_NAME;
@@ -7658,7 +8280,7 @@ module.exports = {
     video: createLocalVideoTrack
 };
 
-},{"./createlocaltracks":40,"./util/constants":156}],40:[function(require,module,exports){
+},{"./createlocaltracks":43,"./util/constants":159}],43:[function(require,module,exports){
 'use strict';
 var asLocalTrack = require('./util').asLocalTrack;
 var buildLogLevels = require('./util').buildLogLevels;
@@ -7819,7 +8441,7 @@ function createLocalTracks(options) {
  */
 module.exports = createLocalTracks;
 
-},{"./media/track/es5":50,"./util":162,"./util/constants":156,"./util/log":166,"./webaudio/workaround180748":185,"@twilio/webrtc":8}],41:[function(require,module,exports){
+},{"./media/track/es5":53,"./util":165,"./util/constants":159,"./util/log":169,"./webaudio/workaround180748":188,"@twilio/webrtc":8}],44:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -7893,7 +8515,7 @@ var DataTrackReceiver = /** @class */ (function (_super) {
  */
 module.exports = DataTrackReceiver;
 
-},{"./transceiver":43,"./transport":44}],42:[function(require,module,exports){
+},{"./transceiver":46,"./transport":47}],45:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -8018,7 +8640,7 @@ var DataTrackSender = /** @class */ (function (_super) {
 }(DataTrackTransceiver));
 module.exports = DataTrackSender;
 
-},{"../util":162,"./transceiver":43}],43:[function(require,module,exports){
+},{"../util":165,"./transceiver":46}],46:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -8078,7 +8700,7 @@ var DataTrackTransceiver = /** @class */ (function (_super) {
 }(TrackTransceiver));
 module.exports = DataTrackTransceiver;
 
-},{"../transceiver":151}],44:[function(require,module,exports){
+},{"../transceiver":154}],47:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -8175,7 +8797,7 @@ var DataTransport = /** @class */ (function (_super) {
  */
 module.exports = DataTransport;
 
-},{"events":31}],45:[function(require,module,exports){
+},{"events":31}],48:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -8269,13 +8891,13 @@ var EncodingParametersImpl = /** @class */ (function (_super) {
  */
 module.exports = EncodingParametersImpl;
 
-},{"events":31}],46:[function(require,module,exports){
+},{"events":31}],49:[function(require,module,exports){
 'use strict';
 var EventEmitter = require('events').EventEmitter;
 var hidePrivateAndCertainPublicPropertiesInClass = require('./util').hidePrivateAndCertainPublicPropertiesInClass;
 module.exports = hidePrivateAndCertainPublicPropertiesInClass(EventEmitter, ['domain']);
 
-},{"./util":162,"events":31}],47:[function(require,module,exports){
+},{"./util":165,"events":31}],50:[function(require,module,exports){
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 var preflighttest_1 = require("./preflight/preflighttest");
@@ -8338,7 +8960,7 @@ module.exports = {
     LocalDataTrack: LocalDataTrack
 };
 
-},{"../package.json":186,"./connect":38,"./createlocaltrack":39,"./createlocaltracks":40,"./media/track/es5":50,"./preflight/preflighttest":84,"./util/support":177,"./vendor/loglevel":182}],48:[function(require,module,exports){
+},{"../package.json":189,"./connect":41,"./createlocaltrack":42,"./createlocaltracks":43,"./media/track/es5":53,"./preflight/preflighttest":87,"./util/support":180,"./vendor/loglevel":185}],51:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -9013,7 +9635,7 @@ function getTrackPublication(trackPublications, track) {
 }
 module.exports = LocalParticipant;
 
-},{"./media/track/es5":50,"./media/track/localaudiotrackpublication":56,"./media/track/localdatatrackpublication":58,"./media/track/localvideotrackpublication":62,"./participant":79,"./util":162,"./util/constants":156,"./util/validate":181,"@twilio/webrtc":8}],49:[function(require,module,exports){
+},{"./media/track/es5":53,"./media/track/localaudiotrackpublication":59,"./media/track/localdatatrackpublication":61,"./media/track/localvideotrackpublication":65,"./participant":82,"./util":165,"./util/constants":159,"./util/validate":184,"@twilio/webrtc":8}],52:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -9179,7 +9801,7 @@ var AudioTrack = /** @class */ (function (_super) {
  */
 module.exports = AudioTrack;
 
-},{"./mediatrack":63}],50:[function(require,module,exports){
+},{"./mediatrack":66}],53:[function(require,module,exports){
 'use strict';
 module.exports = {
     LocalAudioTrack: require('./localaudiotrack'),
@@ -9187,7 +9809,7 @@ module.exports = {
     LocalDataTrack: require('./localdatatrack')
 };
 
-},{"./localaudiotrack":51,"./localdatatrack":52,"./localvideotrack":53}],51:[function(require,module,exports){
+},{"./localaudiotrack":54,"./localdatatrack":55,"./localvideotrack":56}],54:[function(require,module,exports){
 // eslint-disable-next-line no-warning-comments
 // TODO(mroberts): Remove this when we go to the next major version. This is
 // only in place so that we can support ES6 classes without requiring `new`.
@@ -9202,7 +9824,7 @@ function LocalAudioTrack(mediaStreamTrack, options) {
 inherits(LocalAudioTrack, LocalAudioTrackClass);
 module.exports = LocalAudioTrack;
 
-},{"../localaudiotrack":55,"util":190}],52:[function(require,module,exports){
+},{"../localaudiotrack":58,"util":34}],55:[function(require,module,exports){
 // eslint-disable-next-line no-warning-comments
 // TODO(mroberts): Remove this when we go to the next major version. This is
 // only in place so that we can support ES6 classes without requiring `new`.
@@ -9217,7 +9839,7 @@ function LocalDataTrack(options) {
 inherits(LocalDataTrack, LocalDataTrackClass);
 module.exports = LocalDataTrack;
 
-},{"../localdatatrack":57,"util":190}],53:[function(require,module,exports){
+},{"../localdatatrack":60,"util":34}],56:[function(require,module,exports){
 // eslint-disable-next-line no-warning-comments
 // TODO(mroberts): Remove this when we go to the next major version. This is
 // only in place so that we can support ES6 classes without requiring `new`.
@@ -9232,7 +9854,7 @@ function LocalVideoTrack(mediaStreamTrack, options) {
 inherits(LocalVideoTrack, LocalVideoTrackClass);
 module.exports = LocalVideoTrack;
 
-},{"../localvideotrack":61,"util":190}],54:[function(require,module,exports){
+},{"../localvideotrack":64,"util":34}],57:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -9344,7 +9966,7 @@ var Track = /** @class */ (function (_super) {
  */
 module.exports = Track;
 
-},{"../../eventemitter":46,"../../util":162,"../../util/constants":156,"../../util/log":166}],55:[function(require,module,exports){
+},{"../../eventemitter":49,"../../util":165,"../../util/constants":159,"../../util/log":169}],58:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -9501,7 +10123,7 @@ var LocalAudioTrack = /** @class */ (function (_super) {
  */
 module.exports = LocalAudioTrack;
 
-},{"./audiotrack":49,"./localmediatrack":59}],56:[function(require,module,exports){
+},{"./audiotrack":52,"./localmediatrack":62}],59:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -9547,7 +10169,7 @@ var LocalAudioTrackPublication = /** @class */ (function (_super) {
 }(LocalTrackPublication));
 module.exports = LocalAudioTrackPublication;
 
-},{"./localtrackpublication":60}],57:[function(require,module,exports){
+},{"./localtrackpublication":63}],60:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -9685,7 +10307,7 @@ var LocalDataTrack = /** @class */ (function (_super) {
  */
 module.exports = LocalDataTrack;
 
-},{"../../data/sender":42,"./":54}],58:[function(require,module,exports){
+},{"../../data/sender":45,"./":57}],61:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -9731,7 +10353,7 @@ var LocalDataTrackPublication = /** @class */ (function (_super) {
 }(LocalTrackPublication));
 module.exports = LocalDataTrackPublication;
 
-},{"./localtrackpublication":60}],59:[function(require,module,exports){
+},{"./localtrackpublication":63}],62:[function(require,module,exports){
 /* eslint new-cap:0 */
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -10085,7 +10707,7 @@ function restartWhenInadvertentlyStopped(localMediaTrack) {
 }
 module.exports = mixinLocalMediaTrack;
 
-},{"../../util":162,"../../util/constants":156,"../../util/detectsilentaudio":157,"../../util/detectsilentvideo":158,"../../util/documentvisibilitymonitor.js":159,"../../util/localmediarestartdeferreds":165,"../../webaudio/workaround180748":185,"./sender":73,"@twilio/webrtc":8,"@twilio/webrtc/lib/util":21}],60:[function(require,module,exports){
+},{"../../util":165,"../../util/constants":159,"../../util/detectsilentaudio":160,"../../util/detectsilentvideo":161,"../../util/documentvisibilitymonitor.js":162,"../../util/localmediarestartdeferreds":168,"../../webaudio/workaround180748":188,"./sender":76,"@twilio/webrtc":8,"@twilio/webrtc/lib/util":21}],63:[function(require,module,exports){
 /* eslint new-cap:0 */
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -10199,7 +10821,7 @@ var LocalTrackPublication = /** @class */ (function (_super) {
 }(TrackPublication));
 module.exports = LocalTrackPublication;
 
-},{"../../util/constants":156,"./trackpublication":74}],61:[function(require,module,exports){
+},{"../../util/constants":159,"./trackpublication":77}],64:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -10546,7 +11168,7 @@ function workaroundSilentLocalVideo(localVideoTrack, doc) {
  */
 module.exports = LocalVideoTrack;
 
-},{"../../util":162,"../../util/detectsilentvideo":158,"./localmediatrack":59,"./videotrack":77,"@twilio/webrtc/lib/util":21}],62:[function(require,module,exports){
+},{"../../util":165,"../../util/detectsilentvideo":161,"./localmediatrack":62,"./videotrack":80,"@twilio/webrtc/lib/util":21}],65:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -10592,7 +11214,7 @@ var LocalVideoTrackPublication = /** @class */ (function (_super) {
 }(LocalTrackPublication));
 module.exports = LocalVideoTrackPublication;
 
-},{"./localtrackpublication":60}],63:[function(require,module,exports){
+},{"./localtrackpublication":63}],66:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -10956,7 +11578,7 @@ function shimMediaElement(el, onUnintentionallyPaused) {
 }
 module.exports = MediaTrack;
 
-},{"../../util":162,"../../util/localmediarestartdeferreds":165,"./":54,"@twilio/webrtc":8,"@twilio/webrtc/lib/util":21}],64:[function(require,module,exports){
+},{"../../util":165,"../../util/localmediarestartdeferreds":168,"./":57,"@twilio/webrtc":8,"@twilio/webrtc/lib/util":21}],67:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -10992,7 +11614,7 @@ var MediaTrackReceiver = /** @class */ (function (_super) {
 }(MediaTrackTransceiver));
 module.exports = MediaTrackReceiver;
 
-},{"./transceiver":75}],65:[function(require,module,exports){
+},{"./transceiver":78}],68:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -11089,7 +11711,7 @@ var RemoteAudioTrack = /** @class */ (function (_super) {
  */
 module.exports = RemoteAudioTrack;
 
-},{"./audiotrack":49,"./remotemediatrack":69}],66:[function(require,module,exports){
+},{"./audiotrack":52,"./remotemediatrack":72}],69:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -11161,7 +11783,7 @@ var RemoteAudioTrackPublication = /** @class */ (function (_super) {
  */
 module.exports = RemoteAudioTrackPublication;
 
-},{"./remotetrackpublication":70}],67:[function(require,module,exports){
+},{"./remotetrackpublication":73}],70:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -11348,7 +11970,7 @@ var RemoteDataTrack = /** @class */ (function (_super) {
  */
 module.exports = RemoteDataTrack;
 
-},{"../../util/constants":156,"./":54}],68:[function(require,module,exports){
+},{"../../util/constants":159,"./":57}],71:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -11410,7 +12032,7 @@ var RemoteDataTrackPublication = /** @class */ (function (_super) {
  */
 module.exports = RemoteDataTrackPublication;
 
-},{"./remotetrackpublication":70}],69:[function(require,module,exports){
+},{"./remotetrackpublication":73}],72:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -11696,7 +12318,7 @@ function playIfPausedWhileInBackground(remoteMediaTrack) {
  */
 module.exports = mixinRemoteMediaTrack;
 
-},{"../../util/constants":156,"../../util/documentvisibilitymonitor.js":159,"@twilio/webrtc/lib/util":21}],70:[function(require,module,exports){
+},{"../../util/constants":159,"../../util/documentvisibilitymonitor.js":162,"@twilio/webrtc/lib/util":21}],73:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -11891,7 +12513,7 @@ var RemoteTrackPublication = /** @class */ (function (_super) {
  */
 module.exports = RemoteTrackPublication;
 
-},{"./trackpublication":74}],71:[function(require,module,exports){
+},{"./trackpublication":77}],74:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -12271,7 +12893,7 @@ function maybeUpdateDimensionHint(removeVideoTrack) {
  */
 module.exports = RemoteVideoTrack;
 
-},{"../../util/documentvisibilitymonitor.js":159,"../../util/nullobserver.js":169,"../../util/timeout":178,"./remotemediatrack":69,"./videotrack":77}],72:[function(require,module,exports){
+},{"../../util/documentvisibilitymonitor.js":162,"../../util/nullobserver.js":172,"../../util/timeout":181,"./remotemediatrack":72,"./videotrack":80}],75:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -12343,7 +12965,7 @@ var RemoteVideoTrackPublication = /** @class */ (function (_super) {
  */
 module.exports = RemoteVideoTrackPublication;
 
-},{"./remotetrackpublication":70}],73:[function(require,module,exports){
+},{"./remotetrackpublication":73}],76:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -12444,7 +13066,7 @@ var MediaTrackSender = /** @class */ (function (_super) {
 }(MediaTrackTransceiver));
 module.exports = MediaTrackSender;
 
-},{"./transceiver":75}],74:[function(require,module,exports){
+},{"./transceiver":78}],77:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -12541,7 +13163,7 @@ var TrackPublication = /** @class */ (function (_super) {
  */
 module.exports = TrackPublication;
 
-},{"../../eventemitter":46,"../../util":162,"../../util/constants":156,"../../util/log":166}],75:[function(require,module,exports){
+},{"../../eventemitter":49,"../../util":165,"../../util/constants":159,"../../util/log":169}],78:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -12608,7 +13230,7 @@ var MediaTrackTransceiver = /** @class */ (function (_super) {
 }(TrackTransceiver));
 module.exports = MediaTrackTransceiver;
 
-},{"../../transceiver":151}],76:[function(require,module,exports){
+},{"../../transceiver":154}],79:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -12763,7 +13385,7 @@ var VideoProcessorEventObserver = /** @class */ (function (_super) {
 }(EventEmitter));
 module.exports = VideoProcessorEventObserver;
 
-},{"../../util/constants":156,"events":31}],77:[function(require,module,exports){
+},{"../../util/constants":159,"events":31}],80:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -13277,7 +13899,7 @@ function dimensionsChanged(track, elem) {
  */
 module.exports = VideoTrack;
 
-},{"../../util/constants":156,"./mediatrack":63,"./videoprocessoreventobserver":76}],78:[function(require,module,exports){
+},{"../../util/constants":159,"./mediatrack":66,"./videoprocessoreventobserver":79}],81:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -13376,7 +13998,7 @@ var NetworkQualityConfigurationImpl = /** @class */ (function (_super) {
 }(EventEmitter));
 module.exports = NetworkQualityConfigurationImpl;
 
-},{"./util":162,"./util/constants":156,"events":31}],79:[function(require,module,exports){
+},{"./util":165,"./util/constants":159,"events":31}],82:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -13993,7 +14615,7 @@ function reemitTrackPublicationEvents(participant, publication) {
 }
 module.exports = Participant;
 
-},{"./eventemitter":46,"./media/track/remoteaudiotrack":65,"./media/track/remoteaudiotrackpublication":66,"./media/track/remotedatatrack":67,"./media/track/remotedatatrackpublication":68,"./media/track/remotevideotrack":71,"./media/track/remotevideotrackpublication":72,"./util":162}],80:[function(require,module,exports){
+},{"./eventemitter":49,"./media/track/remoteaudiotrack":68,"./media/track/remoteaudiotrackpublication":69,"./media/track/remotedatatrack":70,"./media/track/remotedatatrackpublication":71,"./media/track/remotevideotrack":74,"./media/track/remotevideotrackpublication":75,"./util":165}],83:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -14147,7 +14769,7 @@ function extractSelectedActiveCandidatePair(stats) {
     };
 }
 
-},{}],81:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTurnCredentials = void 0;
@@ -14190,7 +14812,7 @@ function getTurnCredentials(token, wsServer) {
 }
 exports.getTurnCredentials = getTurnCredentials;
 
-},{"../twilioconnection.js":152,"../util/constants":156,"events":31}],82:[function(require,module,exports){
+},{"../twilioconnection.js":155,"../util/constants":159,"events":31}],85:[function(require,module,exports){
 "use strict";
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -14231,7 +14853,7 @@ function makeStat(values) {
 }
 exports.makeStat = makeStat;
 
-},{}],83:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mosToScore = exports.calculateMOS = void 0;
@@ -14292,7 +14914,7 @@ function mosToScore(mosValue) {
 }
 exports.mosToScore = mosToScore;
 
-},{}],84:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -14896,7 +15518,7 @@ function runPreflight(token, options) {
 }
 exports.runPreflight = runPreflight;
 
-},{"../eventemitter":46,"../util":162,"../util/constants":156,"../util/eventobserver":160,"../util/insightspublisher":163,"../util/log":166,"../util/movingaveragedelta":167,"../util/sid":176,"./getCombinedConnectionStats":80,"./getturncredentials":81,"./makestat":82,"./mos":83,"./syntheticaudio":85,"./syntheticvideo":86,"./timer":87}],85:[function(require,module,exports){
+},{"../eventemitter":49,"../util":165,"../util/constants":159,"../util/eventobserver":163,"../util/insightspublisher":166,"../util/log":169,"../util/movingaveragedelta":170,"../util/sid":179,"./getCombinedConnectionStats":83,"./getturncredentials":84,"./makestat":85,"./mos":86,"./syntheticaudio":88,"./syntheticvideo":89,"./timer":90}],88:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.syntheticAudio = void 0;
@@ -14919,7 +15541,7 @@ function syntheticAudio() {
 }
 exports.syntheticAudio = syntheticAudio;
 
-},{"../webaudio/audiocontext":183}],86:[function(require,module,exports){
+},{"../webaudio/audiocontext":186}],89:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.syntheticVideo = void 0;
@@ -14953,7 +15575,7 @@ function syntheticVideo(_a) {
 }
 exports.syntheticVideo = syntheticVideo;
 
-},{}],87:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Timer = void 0;
@@ -14983,7 +15605,7 @@ var Timer = /** @class */ (function () {
 }());
 exports.Timer = Timer;
 
-},{}],88:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -15084,7 +15706,7 @@ var QueueingEventEmitter = /** @class */ (function (_super) {
 }(EventEmitter));
 module.exports = QueueingEventEmitter;
 
-},{"events":31}],89:[function(require,module,exports){
+},{"events":31}],92:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -15365,7 +15987,7 @@ var RemoteParticipant = /** @class */ (function (_super) {
  */
 module.exports = RemoteParticipant;
 
-},{"./participant":79}],90:[function(require,module,exports){
+},{"./participant":82}],93:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -15921,7 +16543,7 @@ function handleSignalingEvents(room, signaling) {
 }
 module.exports = Room;
 
-},{"./eventemitter":46,"./remoteparticipant":89,"./stats/statsreport":148,"./util":162}],91:[function(require,module,exports){
+},{"./eventemitter":49,"./remoteparticipant":92,"./stats/statsreport":151,"./util":165}],94:[function(require,module,exports){
 /* eslint consistent-return:0 */
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -16091,7 +16713,7 @@ var Signaling = /** @class */ (function (_super) {
 }(StateMachine));
 module.exports = Signaling;
 
-},{"../statemachine":120,"./participant":94,"./room":98}],92:[function(require,module,exports){
+},{"../statemachine":123,"./participant":97,"./room":101}],95:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -16171,7 +16793,7 @@ var LocalParticipantSignaling = /** @class */ (function (_super) {
 }(ParticipantSignaling));
 module.exports = LocalParticipantSignaling;
 
-},{"./participant":94}],93:[function(require,module,exports){
+},{"./participant":97}],96:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -16302,7 +16924,7 @@ function setError(publication, error) {
 }
 module.exports = LocalTrackPublicationSignaling;
 
-},{"./track":99}],94:[function(require,module,exports){
+},{"./track":102}],97:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -16527,7 +17149,7 @@ var ParticipantSignaling = /** @class */ (function (_super) {
  */
 module.exports = ParticipantSignaling;
 
-},{"../statemachine":120,"../stats/networkqualitystats":135}],95:[function(require,module,exports){
+},{"../statemachine":123,"../stats/networkqualitystats":138}],98:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -16600,7 +17222,7 @@ var RecordingSignaling = /** @class */ (function (_super) {
  */
 module.exports = RecordingSignaling;
 
-},{"events":31}],96:[function(require,module,exports){
+},{"events":31}],99:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -16640,7 +17262,7 @@ var RemoteParticipantSignaling = /** @class */ (function (_super) {
 }(ParticipantSignaling));
 module.exports = RemoteParticipantSignaling;
 
-},{"./participant":94}],97:[function(require,module,exports){
+},{"./participant":97}],100:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -16745,7 +17367,7 @@ var RemoteTrackPublicationSignaling = /** @class */ (function (_super) {
 }(TrackSignaling));
 module.exports = RemoteTrackPublicationSignaling;
 
-},{"./track":99}],98:[function(require,module,exports){
+},{"./track":102}],101:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -17026,7 +17648,7 @@ function maybeUpdateState(roomSignaling) {
 }
 module.exports = RoomSignaling;
 
-},{"../statemachine":120,"../util":162,"../util/constants":156,"../util/log":166,"../util/timeout":178,"../util/twilio-video-errors":179,"./recording":95}],99:[function(require,module,exports){
+},{"../statemachine":123,"../util":165,"../util/constants":159,"../util/log":169,"../util/timeout":181,"../util/twilio-video-errors":182,"./recording":98}],102:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -17209,7 +17831,7 @@ var TrackSignaling = /** @class */ (function (_super) {
  */
 module.exports = TrackSignaling;
 
-},{"events":31}],100:[function(require,module,exports){
+},{"events":31}],103:[function(require,module,exports){
 'use strict';
 var CancelablePromise = require('../../util/cancelablepromise');
 var DefaultPeerConnectionManager = require('./peerconnectionmanager');
@@ -17325,7 +17947,7 @@ function createCancelableRoomSignalingPromise(token, wsServer, localParticipant,
 }
 module.exports = createCancelableRoomSignalingPromise;
 
-},{"../../util":162,"../../util/cancelablepromise":155,"../../util/twilio-video-errors":179,"./peerconnectionmanager":111,"./room":116,"./twilioconnectiontransport":119}],101:[function(require,module,exports){
+},{"../../util":165,"../../util/cancelablepromise":158,"../../util/twilio-video-errors":182,"./peerconnectionmanager":114,"./room":119,"./twilioconnectiontransport":122}],104:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -17403,7 +18025,7 @@ var DominantSpeakerSignaling = /** @class */ (function (_super) {
  */
 module.exports = DominantSpeakerSignaling;
 
-},{"./mediasignaling":107}],102:[function(require,module,exports){
+},{"./mediasignaling":110}],105:[function(require,module,exports){
 'use strict';
 var Filter = require('../../util/filter');
 /**
@@ -17471,7 +18093,7 @@ var IceBox = /** @class */ (function () {
 }());
 module.exports = IceBox;
 
-},{"../../util/filter":161}],103:[function(require,module,exports){
+},{"../../util/filter":164}],106:[function(require,module,exports){
 'use strict';
 var _a = require('../../util/constants'), ICE_ACTIVITY_CHECK_PERIOD_MS = _a.ICE_ACTIVITY_CHECK_PERIOD_MS, ICE_INACTIVITY_THRESHOLD_MS = _a.ICE_INACTIVITY_THRESHOLD_MS;
 /**
@@ -17608,7 +18230,7 @@ var IceConnectionMonitor = /** @class */ (function () {
 }());
 module.exports = IceConnectionMonitor;
 
-},{"../../util/constants":156}],104:[function(require,module,exports){
+},{"../../util/constants":159}],107:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -17673,7 +18295,7 @@ var SignalingV2 = /** @class */ (function (_super) {
 }(Signaling));
 module.exports = SignalingV2;
 
-},{"../":91,"./cancelableroomsignalingpromise":100,"./localparticipant":105}],105:[function(require,module,exports){
+},{"../":94,"./cancelableroomsignalingpromise":103,"./localparticipant":108}],108:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -17955,7 +18577,7 @@ var LocalParticipantV2 = /** @class */ (function (_super) {
  */
 module.exports = LocalParticipantV2;
 
-},{"../../util":162,"../localparticipant":92,"./localtrackpublication":106}],106:[function(require,module,exports){
+},{"../../util":165,"../localparticipant":95,"./localtrackpublication":109}],109:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -18037,7 +18659,7 @@ var LocalTrackPublicationV2 = /** @class */ (function (_super) {
  */
 module.exports = LocalTrackPublicationV2;
 
-},{"../../util/twilio-video-errors":179,"../localtrackpublication":93}],107:[function(require,module,exports){
+},{"../../util/twilio-video-errors":182,"../localtrackpublication":96}],110:[function(require,module,exports){
 /* eslint callback-return:0 */
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -18136,7 +18758,7 @@ var MediaSignaling = /** @class */ (function (_super) {
 }(EventEmitter));
 module.exports = MediaSignaling;
 
-},{"events":31}],108:[function(require,module,exports){
+},{"events":31}],111:[function(require,module,exports){
 /* eslint callback-return:0 */
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -18295,7 +18917,7 @@ function next(monitor) {
  */
 module.exports = NetworkQualityMonitor;
 
-},{"../../stats/peerconnectionreportfactory":138,"events":31}],109:[function(require,module,exports){
+},{"../../stats/peerconnectionreportfactory":141,"events":31}],112:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -18541,7 +19163,7 @@ function createNetworkQualityInputsMessage(networkQualityInputs, networkQualityR
 }
 module.exports = NetworkQualitySignaling;
 
-},{"../../util/asyncvar":153,"./mediasignaling":107}],110:[function(require,module,exports){
+},{"../../util/asyncvar":156,"./mediasignaling":110}],113:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -20252,7 +20874,7 @@ function setMaxBitrate(params, maxBitrate) {
 }
 module.exports = PeerConnectionV2;
 
-},{"../../data/receiver":41,"../../media/track/receiver":64,"../../statemachine":120,"../../util":162,"../../util/constants":156,"../../util/log":166,"../../util/sdp":170,"../../util/sdp/issue8329":171,"../../util/sdp/trackmatcher/identity":173,"../../util/sdp/trackmatcher/mid":174,"../../util/sdp/trackmatcher/ordered":175,"../../util/timeout":178,"../../util/twilio-video-errors":179,"./icebox":102,"./iceconnectionmonitor.js":103,"@twilio/webrtc":8,"@twilio/webrtc/lib/util":21,"@twilio/webrtc/lib/util/sdp":23,"backoff":25}],111:[function(require,module,exports){
+},{"../../data/receiver":44,"../../media/track/receiver":67,"../../statemachine":123,"../../util":165,"../../util/constants":159,"../../util/log":169,"../../util/sdp":173,"../../util/sdp/issue8329":174,"../../util/sdp/trackmatcher/identity":176,"../../util/sdp/trackmatcher/mid":177,"../../util/sdp/trackmatcher/ordered":178,"../../util/timeout":181,"../../util/twilio-video-errors":182,"./icebox":105,"./iceconnectionmonitor.js":106,"@twilio/webrtc":8,"@twilio/webrtc/lib/util":21,"@twilio/webrtc/lib/util/sdp":23,"backoff":25}],114:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -20812,7 +21434,7 @@ function updateConnectionState(pcm) {
 }
 module.exports = PeerConnectionManager;
 
-},{"../../media/track/sender":73,"../../queueingeventemitter":88,"../../util":162,"../../util/twilio-video-errors":179,"../../webaudio/audiocontext":183,"./peerconnection":110,"@twilio/webrtc/lib/util":21}],112:[function(require,module,exports){
+},{"../../media/track/sender":76,"../../queueingeventemitter":91,"../../util":165,"../../util/twilio-video-errors":182,"../../webaudio/audiocontext":186,"./peerconnection":113,"@twilio/webrtc/lib/util":21}],115:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -20872,7 +21494,7 @@ var RecordingV2 = /** @class */ (function (_super) {
  */
 module.exports = RecordingV2;
 
-},{"../recording":95}],113:[function(require,module,exports){
+},{"../recording":98}],116:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -20992,7 +21614,7 @@ var RemoteParticipantV2 = /** @class */ (function (_super) {
 }(RemoteParticipantSignaling));
 module.exports = RemoteParticipantV2;
 
-},{"../remoteparticipant":96,"./remotetrackpublication":114}],114:[function(require,module,exports){
+},{"../remoteparticipant":99,"./remotetrackpublication":117}],117:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -21046,7 +21668,7 @@ var RemoteTrackPublicationV2 = /** @class */ (function (_super) {
  */
 module.exports = RemoteTrackPublicationV2;
 
-},{"../remotetrackpublication":97}],115:[function(require,module,exports){
+},{"../remotetrackpublication":100}],118:[function(require,module,exports){
 /* eslint callback-return:0 */
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -21186,7 +21808,7 @@ var RenderHintsSignaling = /** @class */ (function (_super) {
 }(MediaSignaling));
 module.exports = RenderHintsSignaling;
 
-},{"../../util":162,"./mediasignaling":107}],116:[function(require,module,exports){
+},{"../../util":165,"./mediasignaling":110}],119:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -21996,7 +22618,7 @@ function replaceNullsWithDefaults(activeIceCandidatePair, peerConnectionId) {
 }
 module.exports = RoomV2;
 
-},{"../../stats/statsreport":148,"../../util":162,"../../util/movingaveragedelta":167,"../../util/twilio-video-errors":179,"../room":98,"./dominantspeakersignaling":101,"./networkqualitymonitor":108,"./networkqualitysignaling":109,"./recording":112,"./remoteparticipant":113,"./renderhintssignaling":115,"./trackprioritysignaling":117,"./trackswitchoffsignaling":118}],117:[function(require,module,exports){
+},{"../../stats/statsreport":151,"../../util":165,"../../util/movingaveragedelta":170,"../../util/twilio-video-errors":182,"../room":101,"./dominantspeakersignaling":104,"./networkqualitymonitor":111,"./networkqualitysignaling":112,"./recording":115,"./remoteparticipant":116,"./renderhintssignaling":118,"./trackprioritysignaling":120,"./trackswitchoffsignaling":121}],120:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -22062,7 +22684,7 @@ var TrackPrioritySignaling = /** @class */ (function (_super) {
 }(MediaSignaling));
 module.exports = TrackPrioritySignaling;
 
-},{"./mediasignaling":107}],118:[function(require,module,exports){
+},{"./mediasignaling":110}],121:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -22120,7 +22742,7 @@ var TrackSwitchOffSignaling = /** @class */ (function (_super) {
  */
 module.exports = TrackSwitchOffSignaling;
 
-},{"./mediasignaling":107}],119:[function(require,module,exports){
+},{"./mediasignaling":110}],122:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -22703,7 +23325,7 @@ function setupTransport(transport) {
 }
 module.exports = TwilioConnectionTransport;
 
-},{"../../statemachine":120,"../../twilioconnection":152,"../../util":162,"../../util/constants":156,"../../util/timeout":178,"../../util/twilio-video-errors":179,"@twilio/webrtc/lib/util/sdp":23,"backoff":25}],120:[function(require,module,exports){
+},{"../../statemachine":123,"../../twilioconnection":155,"../../util":165,"../../util/constants":159,"../../util/timeout":181,"../../util/twilio-video-errors":182,"@twilio/webrtc/lib/util/sdp":23,"backoff":25}],123:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -23149,7 +23771,7 @@ function createUnreachableError(here, there) {
 }
 module.exports = StateMachine;
 
-},{"./util":162,"events":31}],121:[function(require,module,exports){
+},{"./util":165,"events":31}],124:[function(require,module,exports){
 /* eslint no-undefined:0 */
 'use strict';
 /**
@@ -23162,7 +23784,7 @@ function average(xs) {
 }
 module.exports = average;
 
-},{}],122:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 'use strict';
 /**
  * @property {number} [availableSend] - bps (undefined in Firefox)
@@ -23220,7 +23842,7 @@ var IceReport = /** @class */ (function () {
 }());
 module.exports = IceReport;
 
-},{}],123:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict';
 var IceReport = require('./icereport');
 /**
@@ -23265,7 +23887,7 @@ var IceReportFactory = /** @class */ (function () {
 }());
 module.exports = IceReportFactory;
 
-},{"./icereport":122}],124:[function(require,module,exports){
+},{"./icereport":125}],127:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -23323,7 +23945,7 @@ var LocalAudioTrackStats = /** @class */ (function (_super) {
  */
 module.exports = LocalAudioTrackStats;
 
-},{"./localtrackstats":125}],125:[function(require,module,exports){
+},{"./localtrackstats":128}],128:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -23383,7 +24005,7 @@ var LocalTrackStats = /** @class */ (function (_super) {
 }(TrackStats));
 module.exports = LocalTrackStats;
 
-},{"./trackstats":150}],126:[function(require,module,exports){
+},{"./trackstats":153}],129:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -23476,7 +24098,7 @@ var LocalVideoTrackStats = /** @class */ (function (_super) {
 }(LocalTrackStats));
 module.exports = LocalVideoTrackStats;
 
-},{"./localtrackstats":125}],127:[function(require,module,exports){
+},{"./localtrackstats":128}],130:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -23510,7 +24132,7 @@ var NetworkQualityAudioStats = /** @class */ (function (_super) {
 }(NetworkQualityMediaStats));
 module.exports = NetworkQualityAudioStats;
 
-},{"./networkqualitymediastats":131}],128:[function(require,module,exports){
+},{"./networkqualitymediastats":134}],131:[function(require,module,exports){
 'use strict';
 /**
  * Bandwidth network quality statistics.
@@ -23544,7 +24166,7 @@ var NetworkQualityBandwidthStats = /** @class */ (function () {
 }());
 module.exports = NetworkQualityBandwidthStats;
 
-},{}],129:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 /**
  * Fraction lost network quality statistics.
@@ -23573,7 +24195,7 @@ var NetworkQualityFractionLostStats = /** @class */ (function () {
 }());
 module.exports = NetworkQualityFractionLostStats;
 
-},{}],130:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 /**
  * Latency network quality statistics.
@@ -23607,7 +24229,7 @@ var NetworkQualityLatencyStats = /** @class */ (function () {
 }());
 module.exports = NetworkQualityLatencyStats;
 
-},{}],131:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 var NetworkQualitySendStats = require('./networkqualitysendstats');
 var NetworkQualityRecvStats = require('./networkqualityrecvstats');
@@ -23654,7 +24276,7 @@ var NetworkQualityMediaStats = /** @class */ (function () {
 }());
 module.exports = NetworkQualityMediaStats;
 
-},{"./networkqualityrecvstats":132,"./networkqualitysendstats":134}],132:[function(require,module,exports){
+},{"./networkqualityrecvstats":135,"./networkqualitysendstats":137}],135:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -23689,7 +24311,7 @@ var NetworkQualityRecvStats = /** @class */ (function (_super) {
 }(NetworkQualitySendOrRecvStats));
 module.exports = NetworkQualityRecvStats;
 
-},{"./networkqualitysendorrecvstats":133}],133:[function(require,module,exports){
+},{"./networkqualitysendorrecvstats":136}],136:[function(require,module,exports){
 'use strict';
 var NetworkQualityBandwidthStats = require('./networkqualitybandwidthstats');
 var NetworkQualityFractionLostStats = require('./networkqualityfractionloststats');
@@ -23729,7 +24351,7 @@ var NetworkQualitySendOrRecvStats = /** @class */ (function () {
 }());
 module.exports = NetworkQualitySendOrRecvStats;
 
-},{"./networkqualitybandwidthstats":128,"./networkqualityfractionloststats":129,"./networkqualitylatencystats":130}],134:[function(require,module,exports){
+},{"./networkqualitybandwidthstats":131,"./networkqualityfractionloststats":132,"./networkqualitylatencystats":133}],137:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -23764,7 +24386,7 @@ var NetworkQualitySendStats = /** @class */ (function (_super) {
 }(NetworkQualitySendOrRecvStats));
 module.exports = NetworkQualitySendStats;
 
-},{"./networkqualitysendorrecvstats":133}],135:[function(require,module,exports){
+},{"./networkqualitysendorrecvstats":136}],138:[function(require,module,exports){
 'use strict';
 var NetworkQualityAudioStats = require('./networkqualityaudiostats');
 var NetworkQualityVideoStats = require('./networkqualityvideostats');
@@ -23804,7 +24426,7 @@ var NetworkQualityStats = /** @class */ (function () {
 }());
 module.exports = NetworkQualityStats;
 
-},{"./networkqualityaudiostats":127,"./networkqualityvideostats":136}],136:[function(require,module,exports){
+},{"./networkqualityaudiostats":130,"./networkqualityvideostats":139}],139:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -23838,7 +24460,7 @@ var NetworkQualityVideoStats = /** @class */ (function (_super) {
 }(NetworkQualityMediaStats));
 module.exports = NetworkQualityVideoStats;
 
-},{"./networkqualitymediastats":131}],137:[function(require,module,exports){
+},{"./networkqualitymediastats":134}],140:[function(require,module,exports){
 'use strict';
 var ReceiverReport = require('./receiverreport');
 var SenderReport = require('./senderreport');
@@ -23916,7 +24538,7 @@ var PeerConnectionReport = /** @class */ (function () {
 }());
 module.exports = PeerConnectionReport;
 
-},{"./receiverreport":139,"./senderreport":146}],138:[function(require,module,exports){
+},{"./receiverreport":142,"./senderreport":149}],141:[function(require,module,exports){
 'use strict';
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -24346,7 +24968,7 @@ function updateChrome(factory) {
 }
 module.exports = PeerConnectionReportFactory;
 
-},{"./icereportfactory":123,"./peerconnectionreport":137,"./receiverreportfactory":140,"./senderreportfactory":147,"@twilio/webrtc/lib/util":21}],139:[function(require,module,exports){
+},{"./icereportfactory":126,"./peerconnectionreport":140,"./receiverreportfactory":143,"./senderreportfactory":150,"@twilio/webrtc/lib/util":21}],142:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -24472,7 +25094,7 @@ var ReceiverReport = /** @class */ (function (_super) {
 }(SenderOrReceiverReport));
 module.exports = ReceiverReport;
 
-},{"./average":121,"./senderorreceiverreport":144,"./sum":149}],140:[function(require,module,exports){
+},{"./average":124,"./senderorreceiverreport":147,"./sum":152}],143:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -24531,7 +25153,7 @@ var ReceiverReportFactory = /** @class */ (function (_super) {
 }(SenderOrReceiverReportFactory));
 module.exports = ReceiverReportFactory;
 
-},{"./receiverreport":139,"./senderorreceiverreportfactory":145}],141:[function(require,module,exports){
+},{"./receiverreport":142,"./senderorreceiverreportfactory":148}],144:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -24583,7 +25205,7 @@ var RemoteAudioTrackStats = /** @class */ (function (_super) {
 }(RemoteTrackStats));
 module.exports = RemoteAudioTrackStats;
 
-},{"./remotetrackstats":142}],142:[function(require,module,exports){
+},{"./remotetrackstats":145}],145:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -24635,7 +25257,7 @@ var RemoteTrackStats = /** @class */ (function (_super) {
 }(TrackStats));
 module.exports = RemoteTrackStats;
 
-},{"./trackstats":150}],143:[function(require,module,exports){
+},{"./trackstats":153}],146:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -24700,7 +25322,7 @@ var RemoteVideoTrackStats = /** @class */ (function (_super) {
 }(RemoteTrackStats));
 module.exports = RemoteVideoTrackStats;
 
-},{"./remotetrackstats":142}],144:[function(require,module,exports){
+},{"./remotetrackstats":145}],147:[function(require,module,exports){
 'use strict';
 /**
  * @property {StatsId} id
@@ -24734,7 +25356,7 @@ var SenderOrReceiverReport = /** @class */ (function () {
 }());
 module.exports = SenderOrReceiverReport;
 
-},{}],145:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 'use strict';
 /**
  * @property {StatsId} id
@@ -24770,7 +25392,7 @@ var SenderOrReceiverReportFactory = /** @class */ (function () {
 }());
 module.exports = SenderOrReceiverReportFactory;
 
-},{}],146:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 /* eslint no-undefined:0 */
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -24858,7 +25480,7 @@ var SenderReport = /** @class */ (function (_super) {
 }(SenderOrReceiverReport));
 module.exports = SenderReport;
 
-},{"./average":121,"./senderorreceiverreport":144,"./sum":149}],147:[function(require,module,exports){
+},{"./average":124,"./senderorreceiverreport":147,"./sum":152}],150:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -24917,7 +25539,7 @@ var SenderReportFactory = /** @class */ (function (_super) {
 }(SenderOrReceiverReportFactory));
 module.exports = SenderReportFactory;
 
-},{"./senderorreceiverreportfactory":145,"./senderreport":146}],148:[function(require,module,exports){
+},{"./senderorreceiverreportfactory":148,"./senderreport":149}],151:[function(require,module,exports){
 'use strict';
 var LocalAudioTrackStats = require('./localaudiotrackstats');
 var LocalVideoTrackStats = require('./localvideotrackstats');
@@ -24968,7 +25590,7 @@ var StatsReport = /** @class */ (function () {
 }());
 module.exports = StatsReport;
 
-},{"./localaudiotrackstats":124,"./localvideotrackstats":126,"./remoteaudiotrackstats":141,"./remotevideotrackstats":143}],149:[function(require,module,exports){
+},{"./localaudiotrackstats":127,"./localvideotrackstats":129,"./remoteaudiotrackstats":144,"./remotevideotrackstats":146}],152:[function(require,module,exports){
 'use strict';
 /**
  * @param {Array<number|undefined>} xs
@@ -24979,7 +25601,7 @@ function sum(xs) {
 }
 module.exports = sum;
 
-},{}],150:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 'use strict';
 /**
  * Statistics for a {@link Track}.
@@ -25038,7 +25660,7 @@ var TrackStats = /** @class */ (function () {
 }());
 module.exports = TrackStats;
 
-},{}],151:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -25100,7 +25722,7 @@ var TrackTransceiver = /** @class */ (function (_super) {
  */
 module.exports = TrackTransceiver;
 
-},{"events":31}],152:[function(require,module,exports){
+},{"events":31}],155:[function(require,module,exports){
 (function (global){(function (){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -25755,7 +26377,7 @@ TwilioConnection.CloseReason = CloseReason;
 module.exports = TwilioConnection;
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./statemachine":120,"./util":162,"./util/log":166,"./util/networkmonitor":168,"./util/timeout":178,"ws":187}],153:[function(require,module,exports){
+},{"./statemachine":123,"./util":165,"./util/log":169,"./util/networkmonitor":171,"./util/timeout":181,"ws":190}],156:[function(require,module,exports){
 'use strict';
 var defer = require('./').defer;
 /**
@@ -25820,7 +26442,7 @@ var AsyncVar = /** @class */ (function () {
 }());
 module.exports = AsyncVar;
 
-},{"./":162}],154:[function(require,module,exports){
+},{"./":165}],157:[function(require,module,exports){
 /* globals chrome, navigator */
 'use strict';
 var __read = (this && this.__read) || function (o, n) {
@@ -25951,7 +26573,7 @@ module.exports = {
     rebrandedChromeBrowser: rebrandedChromeBrowser
 };
 
-},{}],155:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 'use strict';
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -26083,7 +26705,7 @@ var CancelablePromise = /** @class */ (function () {
 }());
 module.exports = CancelablePromise;
 
-},{}],156:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 'use strict';
 var packageInfo = require('../../package.json');
 module.exports.SDK_NAME = packageInfo.name + ".js";
@@ -26171,7 +26793,7 @@ module.exports.videoContentPreferencesMode = {
     MODE_MANUAL: 'manual'
 };
 
-},{"../../package.json":186}],157:[function(require,module,exports){
+},{"../../package.json":189}],160:[function(require,module,exports){
 'use strict';
 var detectSilence = require('../webaudio/detectsilence');
 var N_ATTEMPTS = 3;
@@ -26212,7 +26834,7 @@ function detectSilentAudio(el) {
 }
 module.exports = detectSilentAudio;
 
-},{"../webaudio/audiocontext":183,"../webaudio/detectsilence":184}],158:[function(require,module,exports){
+},{"../webaudio/audiocontext":186,"../webaudio/detectsilence":187}],161:[function(require,module,exports){
 'use strict';
 // Cached copy of the <canvas> used to check silent video frames.
 var canvas = null;
@@ -26271,7 +26893,7 @@ function detectSilentVideo(el) {
 }
 module.exports = detectSilentVideo;
 
-},{}],159:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 'use strict';
 /**
  * The {@link DocumentVisibilityMonitor} monitors the visibility state of the DOM
@@ -26393,7 +27015,7 @@ var DocumentVisibilityMonitor = /** @class */ (function () {
 }());
 module.exports = new DocumentVisibilityMonitor(2);
 
-},{}],160:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 /* eslint-disable no-console */
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -26491,7 +27113,7 @@ var EventObserver = /** @class */ (function (_super) {
  */
 module.exports = EventObserver;
 
-},{"events":31}],161:[function(require,module,exports){
+},{"events":31}],164:[function(require,module,exports){
 'use strict';
 var Filter = /** @class */ (function () {
     function Filter(options) {
@@ -26535,7 +27157,7 @@ var Filter = /** @class */ (function () {
 }());
 module.exports = Filter;
 
-},{}],162:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -27405,7 +28027,7 @@ exports.isUserMediaTrack = isUserMediaTrack;
 exports.waitForSometime = waitForSometime;
 exports.waitForEvent = waitForEvent;
 
-},{"./constants":156,"./sid":176,"@twilio/webrtc/lib/util":21}],163:[function(require,module,exports){
+},{"./constants":159,"./sid":179,"@twilio/webrtc/lib/util":21}],166:[function(require,module,exports){
 (function (global){(function (){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -27682,7 +28304,7 @@ function reconnect(publisher, token, sdkName, sdkVersion, roomSid, participantSi
 module.exports = InsightsPublisher;
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"..":162,"../../util":162,"events":31,"ws":187}],164:[function(require,module,exports){
+},{"..":165,"../../util":165,"events":31,"ws":190}],167:[function(require,module,exports){
 // eslint-disable-next-line no-warning-comments
 // TODO(mroberts): This should be described as implementing some
 // InsightsPublisher interface.
@@ -27727,7 +28349,7 @@ var InsightsPublisher = /** @class */ (function () {
 }());
 module.exports = InsightsPublisher;
 
-},{}],165:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 var defer = require('./').defer;
 /**
@@ -27789,7 +28411,7 @@ var LocalMediaRestartDeferreds = /** @class */ (function () {
 }());
 module.exports = new LocalMediaRestartDeferreds();
 
-},{"./":162}],166:[function(require,module,exports){
+},{"./":165}],169:[function(require,module,exports){
 /* eslint new-cap:0 */
 'use strict';
 var __read = (this && this.__read) || function (o, n) {
@@ -28076,7 +28698,7 @@ function validateLogLevels(levels) {
 }
 module.exports = Log;
 
-},{"../vendor/loglevel":182,"./constants":156}],167:[function(require,module,exports){
+},{"../vendor/loglevel":185,"./constants":159}],170:[function(require,module,exports){
 'use strict';
 /**
  * Calculates the moving average delta for the given pair ofsamples. A sample (S)
@@ -28123,7 +28745,7 @@ var MovingAverageDelta = /** @class */ (function () {
 }());
 module.exports = MovingAverageDelta;
 
-},{}],168:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 /**
  * Monitor the network connection status to detect interruptions and handoffs.
@@ -28212,7 +28834,7 @@ var NetworkMonitor = /** @class */ (function () {
 }());
 module.exports = NetworkMonitor;
 
-},{}],169:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 /* eslint-disable no-console */
 'use strict';
 var __extends = (this && this.__extends) || (function () {
@@ -28275,7 +28897,7 @@ var NullResizeObserver = /** @class */ (function (_super) {
 }(NullObserver));
 module.exports = { NullIntersectionObserver: NullIntersectionObserver, NullResizeObserver: NullResizeObserver, NullObserver: NullObserver };
 
-},{}],170:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 'use strict';
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -28877,7 +29499,7 @@ exports.unifiedPlanFilterLocalCodecs = unifiedPlanFilterLocalCodecs;
 exports.unifiedPlanAddOrRewriteNewTrackIds = unifiedPlanAddOrRewriteNewTrackIds;
 exports.unifiedPlanAddOrRewriteTrackIds = unifiedPlanAddOrRewriteTrackIds;
 
-},{"../":162,"./simulcast":172}],171:[function(require,module,exports){
+},{"../":165,"./simulcast":175}],174:[function(require,module,exports){
 'use strict';
 var RTCSessionDescription = require('@twilio/webrtc').RTCSessionDescription;
 var createPtToCodecName = require('./').createPtToCodecName;
@@ -29071,7 +29693,7 @@ function addFmtpAttributeForRtxPt(mediaSection, rtxPt, pt) {
 }
 module.exports = workaround;
 
-},{"./":170,"@twilio/webrtc":8}],172:[function(require,module,exports){
+},{"./":173,"@twilio/webrtc":8}],175:[function(require,module,exports){
 'use strict';
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -29357,7 +29979,7 @@ function setSimulcastInMediaSection(section, sdpFormat, trackIdsToAttributes) {
  */
 module.exports = setSimulcastInMediaSection;
 
-},{"../":162}],173:[function(require,module,exports){
+},{"../":165}],176:[function(require,module,exports){
 'use strict';
 /**
  * An {@link IdentityTrackMatcher} matches RTCTrackEvents with their respective
@@ -29383,7 +30005,7 @@ var IdentityTrackMatcher = /** @class */ (function () {
 }());
 module.exports = IdentityTrackMatcher;
 
-},{}],174:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 'use strict';
 var getMediaSections = require('../').getMediaSections;
 /**
@@ -29428,7 +30050,7 @@ var MIDTrackMatcher = /** @class */ (function () {
 }());
 module.exports = MIDTrackMatcher;
 
-},{"../":170}],175:[function(require,module,exports){
+},{"../":173}],178:[function(require,module,exports){
 'use strict';
 var util = require('../../');
 var getMediaSections = require('../').getMediaSections;
@@ -29540,7 +30162,7 @@ var OrderedTrackMatcher = /** @class */ (function () {
 }());
 module.exports = OrderedTrackMatcher;
 
-},{"../":170,"../../":162}],176:[function(require,module,exports){
+},{"../":173,"../../":165}],179:[function(require,module,exports){
 var SID_CHARS = '1234567890abcdef';
 var SID_CHAR_LENGTH = 32;
 // copied from: https://code.hq.twilio.com/flex/monkey/blob/0fdce2b6c52d6be0b17a5cdb92f0c54f119b8ea8/src/client/lib/sid.ts#L39
@@ -29559,7 +30181,7 @@ function createSID(prefix) {
 exports.sessionSID = createSID('SS');
 exports.createSID = createSID;
 
-},{}],177:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 'use strict';
 var _a = require('@twilio/webrtc/lib/util'), guessBrowser = _a.guessBrowser, isWebRTCSupported = _a.support;
 var _b = require('./browserdetection'), isAndroid = _b.isAndroid, isMobile = _b.isMobile, isNonChromiumEdge = _b.isNonChromiumEdge, rebrandedChromeBrowser = _b.rebrandedChromeBrowser, mobileWebKitBrowser = _b.mobileWebKitBrowser;
@@ -29604,7 +30226,7 @@ function isSupported() {
 }
 module.exports = isSupported;
 
-},{"./browserdetection":154,"@twilio/webrtc/lib/util":21}],178:[function(require,module,exports){
+},{"./browserdetection":157,"@twilio/webrtc/lib/util":21}],181:[function(require,module,exports){
 'use strict';
 /**
  * A {@link Timeout} represents a resettable and clearable timeout.
@@ -29699,7 +30321,7 @@ var Timeout = /** @class */ (function () {
 }());
 module.exports = Timeout;
 
-},{}],179:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 // NOTE: Do not edit this file. This code is auto-generated. Contact the
 // Twilio SDK Team for more information.
 'use strict';
@@ -30723,7 +31345,7 @@ var ConfigurationAcquireTurnFailedError = /** @class */ (function (_super) {
 exports.ConfigurationAcquireTurnFailedError = ConfigurationAcquireTurnFailedError;
 Object.defineProperty(TwilioErrorByCode, 53501, { value: ConfigurationAcquireTurnFailedError });
 
-},{"./twilioerror":180}],180:[function(require,module,exports){
+},{"./twilioerror":183}],183:[function(require,module,exports){
 'use strict';
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -30805,7 +31427,7 @@ var TwilioError = /** @class */ (function (_super) {
 }(Error));
 module.exports = TwilioError;
 
-},{}],181:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 'use strict';
 var isNonArrayObject = require('./').isNonArrayObject;
 var _a = require('./constants'), E = _a.typeErrors, clientTrackSwitchOffControl = _a.clientTrackSwitchOffControl, videoContentPreferencesMode = _a.videoContentPreferencesMode, subscriptionMode = _a.subscriptionMode, trackPriority = _a.trackPriority, trackSwitchOffMode = _a.trackSwitchOffMode;
@@ -30922,7 +31544,7 @@ exports.validateBandwidthProfile = validateBandwidthProfile;
 exports.validateLocalTrack = validateLocalTrack;
 exports.validateObject = validateObject;
 
-},{"./":162,"./constants":156}],182:[function(require,module,exports){
+},{"./":165,"./constants":159}],185:[function(require,module,exports){
 /**
  * Copyright (c) 2013 Tim Perry
  * Licensed under the MIT license.
@@ -31162,7 +31784,7 @@ defaultLogger.getLoggers = function getLoggers() {
 defaultLogger['default'] = defaultLogger;
 module.exports = defaultLogger;
 
-},{}],183:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 /* globals webkitAudioContext, AudioContext */
 'use strict';
 var NativeAudioContext = typeof AudioContext !== 'undefined'
@@ -31245,7 +31867,7 @@ var AudioContextFactory = /** @class */ (function () {
 }());
 module.exports = new AudioContextFactory();
 
-},{}],184:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 'use strict';
 /**
  * Return a Promise that resolves after `timeout` milliseconds.
@@ -31298,7 +31920,7 @@ function detectSilence(audioContext, stream, timeout) {
 }
 module.exports = detectSilence;
 
-},{}],185:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 'use strict';
 var detectSilence = require('./detectsilence');
 /**
@@ -31368,7 +31990,7 @@ to get a new one, but we\'ve run out of retries; returning it anyway.');
 }
 module.exports = workaround;
 
-},{"./audiocontext":183,"./detectsilence":184}],186:[function(require,module,exports){
+},{"./audiocontext":186,"./detectsilence":187}],189:[function(require,module,exports){
 module.exports={
   "name": "twilio-video",
   "title": "Twilio Video",
@@ -31527,629 +32149,7 @@ module.exports={
   }
 }
 
-},{}],187:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 module.exports = WebSocket;
 
-},{}],188:[function(require,module,exports){
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-},{}],189:[function(require,module,exports){
-module.exports = function isBuffer(arg) {
-  return arg && typeof arg === 'object'
-    && typeof arg.copy === 'function'
-    && typeof arg.fill === 'function'
-    && typeof arg.readUInt8 === 'function';
-}
-},{}],190:[function(require,module,exports){
-(function (process,global){(function (){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-var formatRegExp = /%[sdj%]/g;
-exports.format = function(f) {
-  if (!isString(f)) {
-    var objects = [];
-    for (var i = 0; i < arguments.length; i++) {
-      objects.push(inspect(arguments[i]));
-    }
-    return objects.join(' ');
-  }
-
-  var i = 1;
-  var args = arguments;
-  var len = args.length;
-  var str = String(f).replace(formatRegExp, function(x) {
-    if (x === '%%') return '%';
-    if (i >= len) return x;
-    switch (x) {
-      case '%s': return String(args[i++]);
-      case '%d': return Number(args[i++]);
-      case '%j':
-        try {
-          return JSON.stringify(args[i++]);
-        } catch (_) {
-          return '[Circular]';
-        }
-      default:
-        return x;
-    }
-  });
-  for (var x = args[i]; i < len; x = args[++i]) {
-    if (isNull(x) || !isObject(x)) {
-      str += ' ' + x;
-    } else {
-      str += ' ' + inspect(x);
-    }
-  }
-  return str;
-};
-
-
-// Mark that a method should not be used.
-// Returns a modified function which warns once by default.
-// If --no-deprecation is set, then it is a no-op.
-exports.deprecate = function(fn, msg) {
-  // Allow for deprecating things in the process of starting up.
-  if (isUndefined(global.process)) {
-    return function() {
-      return exports.deprecate(fn, msg).apply(this, arguments);
-    };
-  }
-
-  if (process.noDeprecation === true) {
-    return fn;
-  }
-
-  var warned = false;
-  function deprecated() {
-    if (!warned) {
-      if (process.throwDeprecation) {
-        throw new Error(msg);
-      } else if (process.traceDeprecation) {
-        console.trace(msg);
-      } else {
-        console.error(msg);
-      }
-      warned = true;
-    }
-    return fn.apply(this, arguments);
-  }
-
-  return deprecated;
-};
-
-
-var debugs = {};
-var debugEnviron;
-exports.debuglog = function(set) {
-  if (isUndefined(debugEnviron))
-    debugEnviron = process.env.NODE_DEBUG || '';
-  set = set.toUpperCase();
-  if (!debugs[set]) {
-    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
-      var pid = process.pid;
-      debugs[set] = function() {
-        var msg = exports.format.apply(exports, arguments);
-        console.error('%s %d: %s', set, pid, msg);
-      };
-    } else {
-      debugs[set] = function() {};
-    }
-  }
-  return debugs[set];
-};
-
-
-/**
- * Echos the value of a value. Trys to print the value out
- * in the best way possible given the different types.
- *
- * @param {Object} obj The object to print out.
- * @param {Object} opts Optional options object that alters the output.
- */
-/* legacy: obj, showHidden, depth, colors*/
-function inspect(obj, opts) {
-  // default options
-  var ctx = {
-    seen: [],
-    stylize: stylizeNoColor
-  };
-  // legacy...
-  if (arguments.length >= 3) ctx.depth = arguments[2];
-  if (arguments.length >= 4) ctx.colors = arguments[3];
-  if (isBoolean(opts)) {
-    // legacy...
-    ctx.showHidden = opts;
-  } else if (opts) {
-    // got an "options" object
-    exports._extend(ctx, opts);
-  }
-  // set default options
-  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
-  if (isUndefined(ctx.depth)) ctx.depth = 2;
-  if (isUndefined(ctx.colors)) ctx.colors = false;
-  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
-  if (ctx.colors) ctx.stylize = stylizeWithColor;
-  return formatValue(ctx, obj, ctx.depth);
-}
-exports.inspect = inspect;
-
-
-// http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
-inspect.colors = {
-  'bold' : [1, 22],
-  'italic' : [3, 23],
-  'underline' : [4, 24],
-  'inverse' : [7, 27],
-  'white' : [37, 39],
-  'grey' : [90, 39],
-  'black' : [30, 39],
-  'blue' : [34, 39],
-  'cyan' : [36, 39],
-  'green' : [32, 39],
-  'magenta' : [35, 39],
-  'red' : [31, 39],
-  'yellow' : [33, 39]
-};
-
-// Don't use 'blue' not visible on cmd.exe
-inspect.styles = {
-  'special': 'cyan',
-  'number': 'yellow',
-  'boolean': 'yellow',
-  'undefined': 'grey',
-  'null': 'bold',
-  'string': 'green',
-  'date': 'magenta',
-  // "name": intentionally not styling
-  'regexp': 'red'
-};
-
-
-function stylizeWithColor(str, styleType) {
-  var style = inspect.styles[styleType];
-
-  if (style) {
-    return '\u001b[' + inspect.colors[style][0] + 'm' + str +
-           '\u001b[' + inspect.colors[style][1] + 'm';
-  } else {
-    return str;
-  }
-}
-
-
-function stylizeNoColor(str, styleType) {
-  return str;
-}
-
-
-function arrayToHash(array) {
-  var hash = {};
-
-  array.forEach(function(val, idx) {
-    hash[val] = true;
-  });
-
-  return hash;
-}
-
-
-function formatValue(ctx, value, recurseTimes) {
-  // Provide a hook for user-specified inspect functions.
-  // Check that value is an object with an inspect function on it
-  if (ctx.customInspect &&
-      value &&
-      isFunction(value.inspect) &&
-      // Filter out the util module, it's inspect function is special
-      value.inspect !== exports.inspect &&
-      // Also filter out any prototype objects using the circular check.
-      !(value.constructor && value.constructor.prototype === value)) {
-    var ret = value.inspect(recurseTimes, ctx);
-    if (!isString(ret)) {
-      ret = formatValue(ctx, ret, recurseTimes);
-    }
-    return ret;
-  }
-
-  // Primitive types cannot have properties
-  var primitive = formatPrimitive(ctx, value);
-  if (primitive) {
-    return primitive;
-  }
-
-  // Look up the keys of the object.
-  var keys = Object.keys(value);
-  var visibleKeys = arrayToHash(keys);
-
-  if (ctx.showHidden) {
-    keys = Object.getOwnPropertyNames(value);
-  }
-
-  // IE doesn't make error fields non-enumerable
-  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
-  if (isError(value)
-      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
-    return formatError(value);
-  }
-
-  // Some type of object without properties can be shortcutted.
-  if (keys.length === 0) {
-    if (isFunction(value)) {
-      var name = value.name ? ': ' + value.name : '';
-      return ctx.stylize('[Function' + name + ']', 'special');
-    }
-    if (isRegExp(value)) {
-      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
-    }
-    if (isDate(value)) {
-      return ctx.stylize(Date.prototype.toString.call(value), 'date');
-    }
-    if (isError(value)) {
-      return formatError(value);
-    }
-  }
-
-  var base = '', array = false, braces = ['{', '}'];
-
-  // Make Array say that they are Array
-  if (isArray(value)) {
-    array = true;
-    braces = ['[', ']'];
-  }
-
-  // Make functions say that they are functions
-  if (isFunction(value)) {
-    var n = value.name ? ': ' + value.name : '';
-    base = ' [Function' + n + ']';
-  }
-
-  // Make RegExps say that they are RegExps
-  if (isRegExp(value)) {
-    base = ' ' + RegExp.prototype.toString.call(value);
-  }
-
-  // Make dates with properties first say the date
-  if (isDate(value)) {
-    base = ' ' + Date.prototype.toUTCString.call(value);
-  }
-
-  // Make error with message first say the error
-  if (isError(value)) {
-    base = ' ' + formatError(value);
-  }
-
-  if (keys.length === 0 && (!array || value.length == 0)) {
-    return braces[0] + base + braces[1];
-  }
-
-  if (recurseTimes < 0) {
-    if (isRegExp(value)) {
-      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
-    } else {
-      return ctx.stylize('[Object]', 'special');
-    }
-  }
-
-  ctx.seen.push(value);
-
-  var output;
-  if (array) {
-    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
-  } else {
-    output = keys.map(function(key) {
-      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
-    });
-  }
-
-  ctx.seen.pop();
-
-  return reduceToSingleString(output, base, braces);
-}
-
-
-function formatPrimitive(ctx, value) {
-  if (isUndefined(value))
-    return ctx.stylize('undefined', 'undefined');
-  if (isString(value)) {
-    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
-                                             .replace(/'/g, "\\'")
-                                             .replace(/\\"/g, '"') + '\'';
-    return ctx.stylize(simple, 'string');
-  }
-  if (isNumber(value))
-    return ctx.stylize('' + value, 'number');
-  if (isBoolean(value))
-    return ctx.stylize('' + value, 'boolean');
-  // For some reason typeof null is "object", so special case here.
-  if (isNull(value))
-    return ctx.stylize('null', 'null');
-}
-
-
-function formatError(value) {
-  return '[' + Error.prototype.toString.call(value) + ']';
-}
-
-
-function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
-  var output = [];
-  for (var i = 0, l = value.length; i < l; ++i) {
-    if (hasOwnProperty(value, String(i))) {
-      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
-          String(i), true));
-    } else {
-      output.push('');
-    }
-  }
-  keys.forEach(function(key) {
-    if (!key.match(/^\d+$/)) {
-      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
-          key, true));
-    }
-  });
-  return output;
-}
-
-
-function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
-  var name, str, desc;
-  desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
-  if (desc.get) {
-    if (desc.set) {
-      str = ctx.stylize('[Getter/Setter]', 'special');
-    } else {
-      str = ctx.stylize('[Getter]', 'special');
-    }
-  } else {
-    if (desc.set) {
-      str = ctx.stylize('[Setter]', 'special');
-    }
-  }
-  if (!hasOwnProperty(visibleKeys, key)) {
-    name = '[' + key + ']';
-  }
-  if (!str) {
-    if (ctx.seen.indexOf(desc.value) < 0) {
-      if (isNull(recurseTimes)) {
-        str = formatValue(ctx, desc.value, null);
-      } else {
-        str = formatValue(ctx, desc.value, recurseTimes - 1);
-      }
-      if (str.indexOf('\n') > -1) {
-        if (array) {
-          str = str.split('\n').map(function(line) {
-            return '  ' + line;
-          }).join('\n').substr(2);
-        } else {
-          str = '\n' + str.split('\n').map(function(line) {
-            return '   ' + line;
-          }).join('\n');
-        }
-      }
-    } else {
-      str = ctx.stylize('[Circular]', 'special');
-    }
-  }
-  if (isUndefined(name)) {
-    if (array && key.match(/^\d+$/)) {
-      return str;
-    }
-    name = JSON.stringify('' + key);
-    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
-      name = name.substr(1, name.length - 2);
-      name = ctx.stylize(name, 'name');
-    } else {
-      name = name.replace(/'/g, "\\'")
-                 .replace(/\\"/g, '"')
-                 .replace(/(^"|"$)/g, "'");
-      name = ctx.stylize(name, 'string');
-    }
-  }
-
-  return name + ': ' + str;
-}
-
-
-function reduceToSingleString(output, base, braces) {
-  var numLinesEst = 0;
-  var length = output.reduce(function(prev, cur) {
-    numLinesEst++;
-    if (cur.indexOf('\n') >= 0) numLinesEst++;
-    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
-  }, 0);
-
-  if (length > 60) {
-    return braces[0] +
-           (base === '' ? '' : base + '\n ') +
-           ' ' +
-           output.join(',\n  ') +
-           ' ' +
-           braces[1];
-  }
-
-  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
-}
-
-
-// NOTE: These type checking functions intentionally don't use `instanceof`
-// because it is fragile and can be easily faked with `Object.create()`.
-function isArray(ar) {
-  return Array.isArray(ar);
-}
-exports.isArray = isArray;
-
-function isBoolean(arg) {
-  return typeof arg === 'boolean';
-}
-exports.isBoolean = isBoolean;
-
-function isNull(arg) {
-  return arg === null;
-}
-exports.isNull = isNull;
-
-function isNullOrUndefined(arg) {
-  return arg == null;
-}
-exports.isNullOrUndefined = isNullOrUndefined;
-
-function isNumber(arg) {
-  return typeof arg === 'number';
-}
-exports.isNumber = isNumber;
-
-function isString(arg) {
-  return typeof arg === 'string';
-}
-exports.isString = isString;
-
-function isSymbol(arg) {
-  return typeof arg === 'symbol';
-}
-exports.isSymbol = isSymbol;
-
-function isUndefined(arg) {
-  return arg === void 0;
-}
-exports.isUndefined = isUndefined;
-
-function isRegExp(re) {
-  return isObject(re) && objectToString(re) === '[object RegExp]';
-}
-exports.isRegExp = isRegExp;
-
-function isObject(arg) {
-  return typeof arg === 'object' && arg !== null;
-}
-exports.isObject = isObject;
-
-function isDate(d) {
-  return isObject(d) && objectToString(d) === '[object Date]';
-}
-exports.isDate = isDate;
-
-function isError(e) {
-  return isObject(e) &&
-      (objectToString(e) === '[object Error]' || e instanceof Error);
-}
-exports.isError = isError;
-
-function isFunction(arg) {
-  return typeof arg === 'function';
-}
-exports.isFunction = isFunction;
-
-function isPrimitive(arg) {
-  return arg === null ||
-         typeof arg === 'boolean' ||
-         typeof arg === 'number' ||
-         typeof arg === 'string' ||
-         typeof arg === 'symbol' ||  // ES6 symbol
-         typeof arg === 'undefined';
-}
-exports.isPrimitive = isPrimitive;
-
-exports.isBuffer = require('./support/isBuffer');
-
-function objectToString(o) {
-  return Object.prototype.toString.call(o);
-}
-
-
-function pad(n) {
-  return n < 10 ? '0' + n.toString(10) : n.toString(10);
-}
-
-
-var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-              'Oct', 'Nov', 'Dec'];
-
-// 26 Feb 16:19:34
-function timestamp() {
-  var d = new Date();
-  var time = [pad(d.getHours()),
-              pad(d.getMinutes()),
-              pad(d.getSeconds())].join(':');
-  return [d.getDate(), months[d.getMonth()], time].join(' ');
-}
-
-
-// log is just a thin wrapper to console.log that prepends a timestamp
-exports.log = function() {
-  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
-};
-
-
-/**
- * Inherit the prototype methods from one constructor into another.
- *
- * The Function.prototype.inherits from lang.js rewritten as a standalone
- * function (not on Function.prototype). NOTE: If this file is to be loaded
- * during bootstrapping this function needs to be rewritten using some native
- * functions as prototype setup using normal JavaScript does not work as
- * expected during bootstrapping (see mirror.js in r114903).
- *
- * @param {function} ctor Constructor function which needs to inherit the
- *     prototype.
- * @param {function} superCtor Constructor function to inherit prototype from.
- */
-exports.inherits = require('inherits');
-
-exports._extend = function(origin, add) {
-  // Don't do anything if add isn't an object
-  if (!add || !isObject(add)) return origin;
-
-  var keys = Object.keys(add);
-  var i = keys.length;
-  while (i--) {
-    origin[keys[i]] = add[keys[i]];
-  }
-  return origin;
-};
-
-function hasOwnProperty(obj, prop) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-
-}).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":189,"_process":36,"inherits":188}]},{},[2]);
+},{}]},{},[2]);
