@@ -27,7 +27,7 @@
     "build:examples:datatracks": "copyfiles -f examples/datatracks/src/helpers.js examples/datatracks/public && browserify examples/datatracks/src/index.js > examples/datatracks/public/index.js",
     "build:examples:manualrenderhint": "copyfiles -f examples/manualrenderhint/src/helpers.js examples/manualrenderhint/public && browserify examples/manualrenderhint/src/index.js > examples/manualrenderhint/public/index.js",
     "build:examples:autorenderhint": "copyfiles -f examples/autorenderhint/src/helpers.js examples/autorenderhint/public && browserify examples/autorenderhint/src/index.js > examples/autorenderhint/public/index.js",
-    "build:quickstart": "browserify quickstart/src/index.js > quickstart/public/index.js",
+    "build:quickstart": "browserify src/index.js > quickstart/public/index.js",
     "clean": "npm-run-all clean:*",
     "clean:examples": "npm-run-all clean:examples:*",
     "clean:examples:bandwidthconstraints": "rimraf examples/bandwidthconstraints/public/index.js examples/bandwidthconstraints/public/helpers.js",
