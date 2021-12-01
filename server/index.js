@@ -75,8 +75,8 @@ app.get("/token", function (request, response) {
   const token = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY,
-    process.env.TWILIO_API_SECRET,
-    { ttl: MAX_ALLOWED_SESSION_DURATION }
+    process.env.TWILIO_API_SECRET
+    // { ttl: MAX_ALLOWED_SESSION_DURATION }
   );
 
   // Assign the generated identity to the token.
